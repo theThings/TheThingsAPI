@@ -80,19 +80,21 @@ class TheThingsAPI {
     // "key" is specified, the last value will be returned. This function will
     // return "limit" number of values of the variable inside an array.
     //
-    // key: name of the variable
-    // limit: max number of values to return.
-    // startDate and endDate are unix timestamps generate by time()
-    function read(key, options = null, cb = null) {
-        options = options ? options : {};   // make sure options is a table
+    // key:     name of the variable
+    // filters  a table containing filter parameters:
+    //              limit       number of results to return
+    //              startDate   a unix timestamp
+    //              endDate     a unix timestamp
+    function read(key, filters = null, cb = null) {
+        filters = filters ? filters : {};   // make sure options is a table
 
         local getUrl = _urlRead + key + "/";
 
         // Create the parameter table
         local params = {};
-        if ("limit" in options) params.limit <- options.limit;
-        if ("startDate" in options) params.startDate <- _formatDateTime(options.startDate);
-        if ("endDate" in options) params.endData <- _formatDateTime(options.endDate);
+        if ("limit" in filters) params.limit <- filters.limit;
+        if ("startDate" in filters) params.startDate <- _formatDateTime(filters.startDate);
+        if ("endDate" in filters) params.endData <- _formatDateTime(filters.endDate);
 
         // encode the parameters and add it to the getUrl
         if (params.len() > 0) getUrl += "?" + http.urlencode(params);
