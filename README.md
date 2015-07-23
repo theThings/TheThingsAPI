@@ -35,28 +35,18 @@ thing <- TheThingsAPI("<-- EXISITING_TOKEN -->");
 Activates a thing using an *Activation Code*.
 
 ```squirrel
-thing <- null;
+// Create a thing object
+thing <- TheThingsAPI();
 
-data <- server.load();
-
-// Check if we have a token stored
-if ("token" in data) {
-    // If we do, create a new Thing with the token:
-    thing = TheThingsAPI(data.token);
-} else {
-    // if we don't, activate a new thing:
-    thing = TheThingsAPI();
-    thing.activate("<-- ACTIVATION_TOKEN -->", function(err, resp, data) {
-        // If it failed - log an error message
-        if (err) {
-            server.error("Failed to activate Thing: " + err);
-            return;
-        }
-        // If it was successful, save the token:
-        data.token <- data.thingToken;
-        server.save(data);
-    });
-}
+// Activate a thing with a token from your Dev Console
+thing.activate("<-- ACTIVATION_TOKEN -->", function(err, resp, data) {
+    // If it failed - log an error message
+    if (err) {
+        server.error("Failed to activate Thing: " + err);
+        return;
+    }
+    server.log("Success! Activated Thing!");
+});
 ```
 
 ### addVar(*key, value, [metadata]*)
