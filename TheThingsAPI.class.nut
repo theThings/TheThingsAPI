@@ -43,9 +43,10 @@ class TheThingsAPI {
     // key: string
     // value: number or string
     // metadata: optional table with additional information:
-    //          timestamp:  a unix timestamp of when the measurment was taken
-    //          geo:        a table with "lat" and "long" keys indicating the
-    //                      geographic location the measurment was taken
+    //           timestamp:  a unix timestamp of when the measurment was taken, or
+    //                       a datetime string with the format YYYYMMDDHHmmss
+    //           geo:        a table with "lat" and "long" keys indicating the
+    //                       geographic location the measurment was taken
     function addVar(key, value, metadata = null) {
         if(!_data) throw "Thing not initialized";
 
@@ -54,7 +55,13 @@ class TheThingsAPI {
 
         // Set extra metadata if provided
         if ("timestamp" in metadata) {
-            dataPoint.datetime <- _formatDateTime(metadata.timestamp);
+            if (typeof metadata.timestamp == "string") {
+                // If they passed in a string, assume it's a pre-formated string
+                dataPoint.datetime <- metadata.timestamp;
+            } else {
+                // Otherwise, convert it to a string
+                dataPoint.datetime <- _formatDateTime(metadata.timestamp);
+            }
         }
 
         if ("geo" in metadata && "lat" in metadata.geo && "long" in metadata.geo) {
@@ -83,8 +90,10 @@ class TheThingsAPI {
     // key:     name of the variable
     // filters  a table containing filter parameters:
     //              limit       number of results to return
-    //              startDate   a unix timestamp
-    //              endDate     a unix timestamp
+    //              startDate   a unix timestamp, or
+    //                          a datetime string with the format YYYYMMDDHHmmss
+    //              endDate     a unix timestamp, or
+    //                          a datetime string with the format YYYYMMDDHHmmss
     function read(key, filters = null, cb = null) {
         filters = filters ? filters : {};   // make sure options is a table
 
@@ -93,8 +102,26 @@ class TheThingsAPI {
         // Create the parameter table
         local params = {};
         if ("limit" in filters) params.limit <- filters.limit;
-        if ("startDate" in filters) params.startDate <- _formatDateTime(filters.startDate);
-        if ("endDate" in filters) params.endData <- _formatDateTime(filters.endDate);
+
+        if ("startDate" in filters) {
+            if (typeof filters.startDate == "string") {
+                // If they passed in a string, assume it's a pre-formated string
+                params.startDate <- filters.startDate;
+            } else {
+                // Otherwise, convert it to a string
+                params.startDate <- _formatDateTime(filters.startDate);
+            }
+        }
+
+        if ("endDate" in filters) {
+            if (typeof filters.endDate == "string") {
+                // If they passed in a string, assume it's a pre-formated string
+                params.endDate <- filters.endDate;
+            } else {
+                // Otherwise, convert it to a string
+                params.endDate <- _formatDateTime(filters.endDate);
+            }
+        }
 
         // encode the parameters and add it to the getUrl
         if (params.len() > 0) getUrl += "?" + http.urlencode(params);
