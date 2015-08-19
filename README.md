@@ -54,7 +54,7 @@ The addVar method allows you to add a key/value pair that will be sent to TheThi
 
 | key       | type    | description |
 | --------- | ------- | ----------- |
-| timestamp | integer | A unix timestamp (generated with [time()](https://electricimp.com/docs/squirrel/system/time)) indicating when the sample was collected |
+| timestamp | integer | A unix timestamp (generated with [time()](https://electricimp.com/docs/squirrel/system/time)) or a datetime string (YYYYMMDDHHmmss) indicating when the sample was collected |
 | geo       | table   | A table with "lat" and "long" keys describing the latitude and longitude where the sample was collected |
 
 The *addVar* method returns a reference to `this`, allowing you to chain multiple calls to *addVar* together, or invoke *write* immediatly after *addVar*.
@@ -98,8 +98,8 @@ The *read* method returns one or more samples for the specified *key*. An option
 | key       | type    | description |
 | --------- | ------- | ----------- |
 | limit     | integer | The maximum number of results to return (1-100) |
-| startDate | integer | A unix timestamp (generated with [time()](https://electricimp.com/docs/squirrel/system/time))  |
-| endDate   | integer | A unix timestamp (generated with [time()](https://electricimp.com/docs/squirrel/system/time))  |
+| startDate | integer | A unix timestamp (generated with [time()](https://electricimp.com/docs/squirrel/system/time)) or a datetime string (YYYYMMDDHHmmss) |
+| endDate   | integer | A unix timestamp (generated with [time()](https://electricimp.com/docs/squirrel/system/time)) or a datetime string (YYYYMMDDHHmmss) |
 
 **NOTE:** If a limit is not supplied, the read method will return the last sample for the specific key.
 
