@@ -3,7 +3,7 @@
 // http://opensource.org/licenses/MIT
 
 class TheThingsAPI {
-    static version = [1,0,0];
+    static version = [1,0,1];
 
     static URLROOT = "https://api.thethings.io/v2/things/";
 
