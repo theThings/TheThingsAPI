@@ -5,7 +5,7 @@
 class TheThingsAPI {
     static version = [1,0,1];
 
-    static URLROOT = "https://api.thethings.io/v2/things/";
+    static URLROOT = "https://api.devices.thethings.io/v2/things/";
 
     static HEADERS_WRITE = { "Accept": "application/json", "Content-Type": "application/json" };
     static HEADERS_READ = { "Accept": "application/json" };
